@@ -40,7 +40,7 @@ router.post('/', jsonParser, (req, res) => {
     field => req.body[field].trim() !== req.body[field]
   );
 
-  if (explicityTrimmedFields) {
+  if (nonTrimmedField) {
     return res.status(422).json({
       code: 422,
       reason: 'ValidationError',

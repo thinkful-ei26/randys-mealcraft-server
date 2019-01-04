@@ -7,7 +7,6 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 
 const { PORT, DATABASE_URL, CLIENT_ORIGIN } = require('./config');
-const { dbConnect } = require('./db-mongoose');
 // const {dbConnect} = require('./db-knex');
 
 const { router: usersRouter } = require('./users');
@@ -16,6 +15,9 @@ const { router: authRouter, localStrategy, jwtStrategy } = require('./auth');
 mongoose.Promise = global.Promise;
 
 const app = express();
+
+app.use(express.static('public'));
+app.use(express.json());
 
 app.use(
   morgan(process.env.NODE_ENV === 'production' ? 'common' : 'dev', {
@@ -45,9 +47,10 @@ passport.use(jwtStrategy);
 app.use('/api/users/', usersRouter);
 app.use('/api/auth/', authRouter);
 
-function runServer(port = PORT) {
+function runServer(databaseUrl, port = PORT) {
   const server = app
     .listen(port, () => {
+      mongoose.connect(databaseUrl);
       console.info(`App listening on port ${server.address().port}`);
     })
     .on('error', err => {
@@ -57,8 +60,8 @@ function runServer(port = PORT) {
 }
 
 if (require.main === module) {
-  dbConnect();
-  runServer(DATABASE_URL).catch(err => console.error(err));
+  // dbConnect();
+  runServer(DATABASE_URL);
 }
 
 module.exports = { app, runServer };

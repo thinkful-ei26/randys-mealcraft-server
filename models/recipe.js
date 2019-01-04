@@ -3,16 +3,15 @@
 const mongoose = require('mongoose');
 
 const RecipeSchema = mongoose.Schema({
+  id: {type: Number, required: true},
+  image: {type: String},
+  imageType: {type: String},
+  instructions: {type: Array},
+  rating: {type: Number},
   title: {
     type: String,
     required: true,
   },
-  description: {
-    type: String,
-    required: true
-  },
-  difficulty: {type: String, required: true},
-  ingredients: {type: Array, required: true}
 });
 
 // RecipeSchema.methods.serialize = function() {
