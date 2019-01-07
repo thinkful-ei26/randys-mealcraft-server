@@ -9,7 +9,7 @@ const passport = require('passport');
 const { PORT, DATABASE_URL, CLIENT_ORIGIN } = require('./config');
 // const {dbConnect} = require('./db-knex');
 
-// const { router: recipesRouter} = require('./routes/recipes');
+const { router: recipesRouter} = require('./routes/recipes');
 const { router: usersRouter } = require('./users');
 const { router: authRouter, localStrategy, jwtStrategy } = require('./auth');
 
@@ -47,7 +47,7 @@ passport.use(jwtStrategy);
 
 app.use('/api/users/', usersRouter);
 app.use('/api/auth/', authRouter);
-// app.use('/myrecipes/', recipesRouter);
+app.use('/api/myrecipes/', recipesRouter);
 
 
 function runServer(databaseUrl, port = PORT) {

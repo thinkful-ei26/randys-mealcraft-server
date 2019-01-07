@@ -3,7 +3,7 @@
 const mongoose = require('mongoose');
 
 const recipeSchema = mongoose.Schema({
-  id: {type: Number, required: true},
+  spoonacularId: {type: Number, required: true},
   image: {type: String},
   imageType: {type: String},
   instructions: {type: Array},
@@ -12,7 +12,7 @@ const recipeSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true}
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User'}
 });
 
 

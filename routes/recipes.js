@@ -3,27 +3,45 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const passport = require('passport');
+const bodyParser = require('body-parser');
 
-const Recipe = require('../models/recipe');
+const jsonParser = bodyParser.json();
+
+const {Recipe} = require('../models/recipe');
 
 const router = express.Router();
 
 router.use('/', passport.authenticate('jwt', {session: false, failWithError: true}));
 
 router.get('/', (req, res, next) => {
-  Recipe.find()
-    .then((res) => res.json(res))
+  const userId = req.user.id;
+  console.log('userId', userId);
+
+  let filter = {};
+  if (userId) {
+    filter.userId = userId;
+  }
+
+  Recipe.find(filter)
+    .then((results) => console.log(res.json(results)))
     .catch(err => next(err));
 });
 
-router.post('/', (req, res, next) => {
+router.post('/', jsonParser, (req, res, next) => {
   const userId = req.user.id;
-
-  const newRecipe = {};
+  let newRecipe = {spoonacularId: req.body.id, 
+    userId: userId,
+    image: req.body.image,
+    instructions: req.body.instructions,
+    rating: null,
+    title: req.body.title,
+  };
+  console.log('userId:', userId);
+  console.log('Recipe:', newRecipe);
 
   Recipe.create(newRecipe)
     .then(res => {
-      res.location(`${req.originalUrl}/${res.id}`).status(201).json(res);
+      console.log(res);
     })
     .catch(err => {
       next(err);
@@ -90,4 +108,4 @@ router.delete('/:id', (req, res, next) => {
     });
 });
 
-module.exports = router;
+module.exports = {router};
