@@ -89,17 +89,18 @@ router.put('/:id', (req, res, next) => {
 
 /* ========== DELETE/REMOVE A SINGLE ITEM ========== */
 router.delete('/:id', (req, res, next) => {
-  const { id } = req.params;
+  const id = req.payload;
   const userId = req.user.id;
+  console.log('req.body.id',id, 'req.user.id', userId);
 
-  /***** Never trust users - validate input *****/
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    const err = new Error('The `id` is not valid');
-    err.status = 400;
-    return next(err);
-  }
+  // /***** Never trust users - validate input *****/
+  // if (!mongoose.Types.ObjectId.isValid(id)) {
+  //   const err = new Error('The `id` is not valid');
+  //   err.status = 400;
+  //   return next(err);
+  // }
 
-  Recipe.findOneAndRemove({ _id: id, userId})
+  Recipe.findOneAndRemove({id: id, userId})
     .then(() => {
       res.sendStatus(204);
     })
