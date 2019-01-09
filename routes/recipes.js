@@ -40,9 +40,7 @@ router.post('/', jsonParser, (req, res, next) => {
   console.log('Recipe:', newRecipe);
 
   Recipe.create(newRecipe)
-    .then(res => {
-      console.log(res);
-    })
+    .then(data => res.json(data))
     .catch(err => {
       next(err);
     });
