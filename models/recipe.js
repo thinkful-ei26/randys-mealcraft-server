@@ -12,7 +12,8 @@ const recipeSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User'}
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+  saved: {type: String, default: ''}
 });
 
 

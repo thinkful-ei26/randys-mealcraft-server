@@ -15,7 +15,6 @@ router.use('/', passport.authenticate('jwt', {session: false, failWithError: tru
 
 router.get('/', (req, res, next) => {
   const userId = req.user.id;
-  console.log('userId', userId);
 
   let filter = {};
   if (userId) {
@@ -36,8 +35,6 @@ router.post('/', jsonParser, (req, res, next) => {
     rating: null,
     title: req.body.title,
   };
-  console.log('userId:', userId);
-  console.log('Recipe:', newRecipe);
 
   Recipe.create(newRecipe)
     .then(data => res.json(data))
@@ -87,12 +84,12 @@ router.put('/:id', (req, res, next) => {
 
 /* ========== DELETE/REMOVE A SINGLE ITEM ========== */
 router.delete('/:id', (req, res, next) => {
-  const id = req.params;
+  const id = req.params.id;
   const userId = req.user.id;
+  console.log(id);
   console.log('recipe id',id, 'userId', userId);
-  console.log(req.params);
 
-  Recipe.findOneAndRemove({id: id, userId})
+  Recipe.findOneAndRemove({_id: id, userId})
     .then(data => res.json(data))
     .catch(err => {
       next(err);
