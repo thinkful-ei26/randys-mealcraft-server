@@ -23,7 +23,7 @@ router.get('/', (req, res, next) => {
   }
 
   Recipe.find(filter)
-    .then((results) => console.log(res.json(results)))
+    .then((results) => res.json(results))
     .catch(err => next(err));
 });
 
@@ -87,21 +87,13 @@ router.put('/:id', (req, res, next) => {
 
 /* ========== DELETE/REMOVE A SINGLE ITEM ========== */
 router.delete('/:id', (req, res, next) => {
-  const id = req.payload;
+  const id = req.params;
   const userId = req.user.id;
-  console.log('req.body.id',id, 'req.user.id', userId);
-
-  // /***** Never trust users - validate input *****/
-  // if (!mongoose.Types.ObjectId.isValid(id)) {
-  //   const err = new Error('The `id` is not valid');
-  //   err.status = 400;
-  //   return next(err);
-  // }
+  console.log('recipe id',id, 'userId', userId);
+  console.log(req.params);
 
   Recipe.findOneAndRemove({id: id, userId})
-    .then(() => {
-      res.sendStatus(204);
-    })
+    .then(data => res.json(data))
     .catch(err => {
       next(err);
     });
