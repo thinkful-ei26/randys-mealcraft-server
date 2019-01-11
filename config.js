@@ -11,5 +11,3 @@ module.exports = {
   JWT_SECRET: process.env.JWT_SECRET,
   JWT_EXPIRY: process.env.JWT_EXPIRY || '7d'
 };
-
-// DATABASE_URL=mongodb://admin:admin1@ds145584.mlab.com:45584/meal-craft
